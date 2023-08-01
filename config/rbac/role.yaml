@@ -1,0 +1,32 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: manager-role
+rules:
+- apiGroups:
+  - node.log-platform.com
+  resources:
+  - nodescales
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - node.log-platform.com
+  resources:
+  - nodescales/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - node.log-platform.com
+  resources:
+  - nodescales/status
+  verbs:
+  - get
+  - patch
+  - update

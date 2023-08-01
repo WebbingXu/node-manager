@@ -1,0 +1,12 @@
+apiVersion: node.log-platform.com/v1
+kind: NodeScale
+metadata:
+  labels:
+    app.kubernetes.io/name: nodescale
+    app.kubernetes.io/instance: nodescale-sample
+    app.kubernetes.io/part-of: node-manager
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: node-manager
+  name: nodescale-sample
+spec:
+  # TODO(user): Add fields here
