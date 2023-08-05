@@ -77,7 +77,7 @@ func (r *NodeScaleReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	// 获取 nodeScale 所属的集群，也就是看要对哪个集群进行扩容
 	clusterName := nodeScale.Spec.ClusterName
 
-	// 1. 获取nodeScale所属集群所有节点，判断哪些节点需要扩容
+	// 1. 获取nodeScale所属集群所有节点，判断哪些IP需要扩容，那些IP需要缩容
 	// cluster 的 kubeConfig 文件通过 configmap 挂载到容器内，configmap和容器内文件名为集群名
 	cli, err := CreateClient(filepath.Join(clustersKubeConfigDir, clusterName))
 	if err != nil {
@@ -88,7 +88,8 @@ func (r *NodeScaleReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 		klog.Errorf("list nodes from %s failed, err: %s", clusterName, err.Error())
 		return ctrl.Result{}, err
 	}
-	delta := NodeDiff(nodesInCR, nodesInCluster)
+	saleIPs := GetSaleIPs(nodesInCR, nodesInCluster)
+	shrinkIPs := GetShrinkIPs(nodesInCR, nodesInCluster)
 
 	// 2. 调用 toc ansible 进行扩容
 
